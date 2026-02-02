@@ -1,245 +1,512 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Haru-Urara-Bot</title>
-  <style>
-    :root{--bg:#0f172a;--card:#0b1220;--accent:#7dd3fc;--muted:#9aa4b2}
-    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#071024 0%,#07162a 100%);color:#e6eef6}
-    .app{max-width:820px;margin:28px auto;padding:20px}
-    .header{display:flex;gap:16px;align-items:center}
-    .avatar{width:96px;height:96px;border-radius:12px;overflow:hidden;background:#062133;display:flex;align-items:center;justify-content:center}
-    .avatar img{width:100%;height:100%;object-fit:cover}
-    h1{margin:0;font-size:20px}
-    .card{background:rgba(255,255,255,0.03);padding:16px;border-radius:12px;margin-top:16px}
-    .console{height:380px;overflow:auto;padding:12px;background:rgba(0,0,0,0.12);border-radius:8px}
-    .line{margin-bottom:10px}
-    .user{color:var(--accent)}
-    .bot{color:#d1e8ff}
-    .input-row{display:flex;gap:8px;margin-top:12px}
-    input.command{flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
-    button{padding:10px 12px;border-radius:8px;border:0;background:var(--accent);color:#012;cursor:pointer}
-    .small{font-size:13px;color:var(--muted)}
-    .settings{margin-top:12px;display:flex;gap:8px;align-items:center}
-    .img-upload{display:flex;gap:8px;align-items:center}
-    .cmd-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-    pre {white-space:pre-wrap}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarrotMovie - Acceso Series</title>
+    <style>
+        /* Estilos CSS para el diseño */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Nuevo estilo para el contenedor del logo y título */
+        .header-branding {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 20px;
+        }
+        
+        /* Estilo para el logo */
+        .header-branding img {
+            max-width: 120px; /* Tamaño máximo del logo */
+            height: auto;
+            margin-bottom: 10px; /* Espacio entre el logo y el título */
+            border-radius: 50%; /* Si quieres que el logo sea redondo (opcional) */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #c86f8b; /* Color principal */
+            text-align: center;
+            margin-top: 0; /* Eliminamos el margen superior duplicado */
+        }
+        h2 {
+            border-bottom: 3px solid #000000;
+            padding-bottom: 10px;
+            margin-top: 50px;
+            color: #333;
+        }
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Muestra 3-4 videos por fila */
+            gap: 20px;
+            padding: 20px 0;
+        }
+        .video-item {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .video-item video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 1px solid #eee;
+        }
+        .video-item p {
+            padding: 10px;
+            margin: 0;
+            text-align: center;
+            font-size: 0.9em;
+            color: #606770;
+        }
+
+        /* Estilos para la SECCIÓN DE AUTENTICACIÓN GLOBAL */
+        #login-container {
+            background-color: #ffffff; 
+            border: 2px solid #c86f8b;
+            border-radius: 10px;
+            padding: 40px;
+            margin: 100px auto; /* Centrado en la página */
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Estilos para la sección privada DENTRO del contenido principal (opcional, si quieres mantenerla) */
+        #private-section {
+            background-color: #fff3cd; /* Fondo para resaltar la sección */
+            border: 1px solid #ffeeba;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        .password-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .password-form input[type="text"],
+        .password-form input[type="password"] { 
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 80%;
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .password-form button {
+            padding: 10px 20px;
+            background-color: #c35377;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .password-form button:hover {
+            background-color: #c9003c;
+        }
+        #auth-message {
+            margin-top: 10px;
+            font-weight: bold;
+            color: red;
+        }
+    </style>
 </head>
 <body>
-  <div class="app">
-    <div class="header">
-      <div class="avatar" id="avatar"><img id="avatarImg" src="https://spacny.wuaze.com//uploads/32990458e77494cdaeab1b9685495a77_1.jpg" alt="avatar"></div>
-      <div>
-        <h1>Haru-Urara-Bot</h1>
-        <div class="small">Escribe comandos empezando por <code>.</code> — ejemplo: <code>.menu</code> o <code>.img</code></div>
-      </div>
-    </div><div class="card">
-  <div class="small">Ajustes (si quieres conectar una API para AI o cambiar el avatar)</div>
-  <div class="settings">
-    <input id="openaiKey" placeholder="Pega tu OpenAI API Key (opcional)" style="flex:1;padding:8px;border-radius:6px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);color:inherit" />
-    <button id="clearKey">Borrar</button>
-  </div>
-  <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
-    <div class="img-upload">
-      <label class="small">Avatar:</label>
-      <input id="avatarFile" type="file" accept="image/*" />
-      <button id="resetAvatar">Restaurar</button>
+    
+    <div id="login-container">
+        <div class="header-branding">
+            <img src="https://files.catbox.moe/fdchtm.jpeg" alt="CARROT Movies Logo">
+        </div>
+        
+        <h1>Acceso a CARROT Movies</h1>
+        <p>Introduce tus credenciales para acceder al contenido:</p>
+        <div class="password-form">
+            <input type="text" id="global-username-input" placeholder="Nombre de usuario">
+            <input type="password" id="global-password-input" placeholder="Contraseña">
+            <button onclick="globalLogin()">Iniciar Sesión</button>
+            <p id="global-auth-message"></p>
+        </div>
     </div>
-  </div>
-</div>
 
-<div class="card">
-  <div class="console" id="console" aria-live="polite"></div>
+    <div id="main-content" style="display: none;">
 
-  <div class="input-row">
-    <input id="cmdInput" class="command" placeholder="Escribe un comando (por ejemplo .menu)" />
-    <button id="sendBtn">Enviar</button>
-  </div>
+        <div class="header-branding">
+            <img src="https://files.catbox.moe/evzvn4.jpeg" alt="CARROT Movies Logo">
+            <h1>CARROT Movies</h1>
+        </div>
 
-  <div class="small" style="margin-top:8px">Comandos rápidos: <code>.menu</code> <code>.img</code> <code>.time</code> <code>.poema</code> <code>.clima España</code> <code>.tabla 7</code> <code>.Ia ¿Hola?</code> <code>.resumen &lt;texto&gt;</code></div>
+        <h2>Bocchi The Rock (12 Videos)</h2>
+        <div class="video-grid">
+            
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="https://files.catbox.moe/5h90ie.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Cap 1: Bocchi the rock.</p>
+            </div>
+            
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="https://files.catbox.moe/raj6qu.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Cap 2: Bocchi the rock.</p>
+            </div>
+            
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/videos.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Cap 3: Bocchi the rock.</p>
+            </div>
 
-</div>
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/videos.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Cap 4: Bocchi the rock.</p>
+            </div>
+            
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/video5.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Cap 5: Bocchi the rock.</p>
+            </div>
 
-  </div> <script>
-    // --- Utilidades de UI ---
-    const consoleEl = document.getElementById('console')
-    function writeLine(text, cls='bot'){
-      const d = document.createElement('div')
-      d.className = 'line '+cls
-      d.innerHTML = text
-      consoleEl.appendChild(d)
-      consoleEl.scrollTop = consoleEl.scrollHeight
-    }
-    function writeUser(text){ writeLine('<strong class="user">> '+escapeHtml(text)+'</strong>','user') }
-    function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/video6.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Cap 6: Bocchi the rock.</p>
+            </div>
 
-    // --- Command handling ---
-    async function handle(cmdRaw){
-      if(!cmdRaw.trim()) return
-      writeUser(cmdRaw)
-      const parts = cmdRaw.trim().split(' ')
-      const cmd = parts[0].toLowerCase()
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/video7.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Cap 7: Bocchi the rock.</p>
+            </div>
 
-      try{
-        if(cmd === '.menu'){
-          // show commands and placeholder image
-          const html = `
-            <div style="display:flex;flex-direction:column;gap:8px">
-              <img src="${document.getElementById('avatarImg').src}" style="width:140px;height:140px;border-radius:8px;object-fit:cover" />
-              <div><strong>Comandos disponibles</strong></div>
-              <div class="cmd-list">
-                <div><code>.menu</code><div class="small">Muestra este menú</div></div>
-                <div><code>.img</code><div class="small">Muestra una waifu aleatoria (api)</div></div>
-                <div><code>.time</code><div class="small">Hora local mediante API</div></div>
-                <div><code>.poema</code><div class="small">Poema aleatorio (API)</div></div>
-                <div><code>.clima &lt;país|ciudad&gt;</code><div class="small">Clima por ciudad o país</div></div>
-                <div><code>.tabla &lt;n&gt;</code><div class="small">Tabla de multiplicar 1..10 para n</div></div>
-                <div><code>.Ia &lt;mensaje&gt;</code><div class="small">Habla con una IA (requiere API key en ajustes)</div></div>
-                <div><code>.resumen &lt;texto&gt;</code><div class="small">Resumen extractivo del texto</div></div>
-              </div>
-            </div>`
-          writeLine(html,'bot')
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/video8.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Cap 8: Bocchi the rock.</p>
+            </div>
+
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/video9.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Cap 9: Bocchi the rock.</p>
+            </div>
+
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/video10.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Cap 10: Bocchi the rock.</p>
+            </div>
+
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/videos.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video. 
+                    </video>
+                    <p>Cap 11: Bocchi the rock.</p>          
+            </div>
+
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/video.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video. 
+                    </video>
+                    <p>Cap 12: Bocchi the rock.</p>
+            </div>
+        </div>
+            
+        <h2>sin titulo (10 Videos)</h2>
+        <div class="video-grid">
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/videos.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Clip 1: Título o descripción del video.</p>
+            </div>
+
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/videos.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Clip 2: Título del segundo video.</p>
+            </div>
+            
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/videos.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Clip 3: Título del tercer video.</p>
+            </div>
+
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/videos.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Clip 4: Título del cuarto video.</p>
+            </div>
+            
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/video5.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Clip 5: Título del quinto video.</p>
+            </div>
+
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/video6.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Clip 6: Título del sexto video.</p>
+            </div>
+
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/video7.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Clip 7: Título del séptimo video.</p>
+            </div>
+
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/video8.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Clip 8: Título del octavo video.</p>
+            </div>
+
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/video9.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Clip 9: Título del noveno video.</p>
+            </div>
+
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/video10.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Clip 10: Título del décimo video.</p>
+            </div>
+        </div>
+
+        <h2>Koe no Katachi (1 Videos)</h2>
+        <div class="video-grid">
+            
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/videos.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+                <p>Cap 1: Koe no Katachi.</p>
+            </div>
+
+        <h2>Amor de gata (1 Videos)</h2>
+        <div class="video-grid">
+
+            <div class="video-item">
+                <video controls preload="metadata" poster="">
+                    <source src="ruta/a/videos.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video. 
+                </video>
+                <p>Cap 1: Amor de gata. </p>
+            </div>
+        </div>
+        
+        <div id="private-section">
+            <h2>🔒 Videos Privados del owner (10 Clips)</h2>
+            
+            <div id="private-auth" class="password-form">
+                <p>Estos videos tienen una protección adicional. Introduce tus credenciales privadas:</p>
+                <input type="text" id="username-input" placeholder="Nombre de usuario">
+                <input type="password" id="password-input" placeholder="Contraseña">
+                <button onclick="checkCredentials()">Ver Videos</button>
+                <p id="auth-message"></p>
+            </div>
+
+            <div id="private-videos-content" style="display: none;">
+                <div class="video-grid">
+                    <div class="video-item">
+                        <video controls preload="metadata" poster="">
+                            <source src="https://files.catbox.moe/mx3d9h.mp4" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                        <p>Clip Privado 1: El primer video secreto.</p>
+                    </div>
+                    
+                    <div class="video-item">
+                        <video controls preload="metadata" poster="">
+                            <source src="https://files.catbox.moe/9rhazg.mp4" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                        <p>Clip Privado 2.</p>
+                    </div>
+                    
+                    <div class="video-item">
+                        <video controls preload="metadata" poster="">
+                            <source src="https://files.catbox.moe/bsvfd3.mp4" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                        <p>Clip Privado 3.</p>
+                    </div>
+
+                    <div class="video-item">
+                        <video controls preload="metadata" poster="">
+                            <source src="https://files.catbox.moe/k6l166.mp4" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                        <p>Clip Privado 4.</p>
+                    </div>
+
+                    <div class="video-item">
+                        <video controls preload="metadata" poster="">
+                            <source src="https://files.catbox.moe/s43ni1.mp4" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                        <p>Clip Privado 5.</p>
+                    </div>
+
+                    <div class="video-item">
+                        <video controls preload="metadata" poster="">
+                            <source src="https://files.catbox.moe/uvp18x.mp4" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                        <p>Clip Privado 6.</p>
+                    </div>
+                    
+                    <div class="video-item">
+                        <video controls preload="metadata" poster="">
+                            <source src="https://files.catbox.moe/2kk73r.mp4" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                        <p>Clip Privado 7.</p>
+                    </div>
+
+                    <div class="video-item">
+                        <video controls preload="metadata" poster="">
+                            <source src="https://files.catbox.moe/7sxcid.mp4" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                        <p>Clip Privado 8.</p>
+                    </div>
+
+                    <div class="video-item">
+                        <video controls preload="metadata" poster="">
+                            <source src="ruta/a/video-privado9.mp4" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                        <p>Clip Privado 9.</p>
+                    </div>
+
+                    <div class="video-item">
+                        <video controls preload="metadata" poster="">
+                            <source src="ruta/a/video-privado10.mp4" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                        <p>Clip Privado 10.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // *** CREDENCIALES DISTINTAS SOLICITADAS ***
+        
+        // 1. Credenciales para el Acceso Global al Sitio
+        const globalCorrectUsername = "Usuario"; 
+        const globalCorrectPassword = "usuario11";
+
+        // 2. Credenciales para los Videos Privados (owner)
+        const privateCorrectUsername = "KG359"; 
+        const privateCorrectPassword = "Chizu8890";
+
+        // Función de LOGIN GLOBAL
+        function globalLogin() {
+            const usernameInput = document.getElementById('global-username-input').value;
+            const passwordInput = document.getElementById('global-password-input').value;
+            const authMessage = document.getElementById('global-auth-message');
+            const loginContainer = document.getElementById('login-container');
+            const mainContent = document.getElementById('main-content');
+
+            if (usernameInput === globalCorrectUsername && passwordInput === globalCorrectPassword) {
+                // Credenciales correctas: oculta el login y muestra el contenido principal
+                loginContainer.style.display = 'none';
+                mainContent.style.display = 'block';
+                // Opcional: limpiar mensaje si ya lo hay
+                authMessage.textContent = ''; 
+            } else {
+                // Credenciales incorrectas: muestra un mensaje de error
+                authMessage.textContent = 'Nombre de usuario o Contraseña incorrectos. Inténtalo de nuevo.';
+                authMessage.style.color = 'red';
+                document.getElementById('global-username-input').value = ''; // Limpia el campo
+                document.getElementById('global-password-input').value = ''; // Limpia el campo
+            }
         }
+        
+        // Función de LOGIN PARA VIDEOS PRIVADOS
+        function checkCredentials() {
+            const usernameInput = document.getElementById('username-input').value;
+            const passwordInput = document.getElementById('password-input').value;
+            const authMessage = document.getElementById('auth-message');
+            const authForm = document.getElementById('private-auth');
+            const privateContent = document.getElementById('private-videos-content');
 
-        else if(cmd === '.img'){
-          writeLine('Cargando waifu...','bot')
-          const res = await fetch('https://api.waifu.pics/sfw/waifu')
-          const j = await res.json()
-          if(j && j.url){
-            writeLine(`<div><img src="${j.url}" style="max-width:320px;border-radius:10px;" /><div class="small">Fuente: api.waifu.pics</div></div>`,'bot')
-          } else {
-            writeLine('No se pudo obtener imagen de waifu.','bot')
-          }
+            if (usernameInput === privateCorrectUsername && passwordInput === privateCorrectPassword) {
+                // Credenciales correctas: oculta el formulario y muestra los videos
+                authForm.style.display = 'none';
+                privateContent.style.display = 'block';
+                authMessage.textContent = '¡Acceso Concedido a Videos Privados!';
+                authMessage.style.color = 'green';
+            } else {
+                // Credenciales incorrectas: muestra un mensaje de error
+                authMessage.textContent = 'Nombre de usuario o Contraseña de Owner incorrectos. Inténtalo de nuevo.';
+                authMessage.style.color = 'red';
+                document.getElementById('username-input').value = ''; // Limpia el campo
+                document.getElementById('password-input').value = ''; // Limpia el campo
+            }
         }
-
-        else if(cmd === '.time'){
-          writeLine('Consultando hora...','bot')
-          // usamos worldtimeapi.org para obtener hora local según IP
-          const res = await fetch('https://worldtimeapi.org/api/ip')
-          const j = await res.json()
-          if(j && j.datetime){
-            const dt = new Date(j.datetime)
-            writeLine(`<div>Zona: <strong>${escapeHtml(j.timezone || 'desconocida')}</strong><br/>Hora local: <strong>${dt.toLocaleString()}</strong></div>`,'bot')
-          } else {
-            writeLine('No se pudo obtener la hora desde el servicio.','bot')
-          }
-        }
-
-        else if(cmd === '.poema'){
-          writeLine('Buscando un poema aleatorio...','bot')
-          // poetrydb.org ofrece poemas aleatorios
-          const res = await fetch('https://poetrydb.org/random')
-          const j = await res.json()
-          if(Array.isArray(j) && j.length){
-            const p = j[0]
-            const body = (p.lines || []).join('\n')
-            writeLine(`<div><strong>${escapeHtml(p.title || 'Poema')}</strong> — ${escapeHtml(p.author||'')}
-                      <pre>${escapeHtml(body)}</pre></div>`,'bot')} else writeLine('No se encontró poema.','bot')
-    }
-
-    else if(cmd === '.clima'){
-      const query = parts.slice(1).join(' ')
-      if(!query){ writeLine('Usa: .clima <ciudad o país> — ejemplo: .clima Madrid','bot'); return }
-      writeLine(`Buscando clima para <strong>${escapeHtml(query)}</strong>...`,'bot')
-      // Usaremos la API de geocoding y luego open-meteo para clima (sin API key)
-      const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1`)
-      const geo = await geoRes.json()
-      if(!geo.results || !geo.results.length){ writeLine('No encontré esa ciudad/pais. Intenta con ciudad, ejemplo: Madrid','bot'); return }
-      const loc = geo.results[0]
-      const lat = loc.latitude, lon = loc.longitude
-      const metRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`)
-      const met = await metRes.json()
-      if(met && met.current_weather){
-        const cw = met.current_weather
-        writeLine(`<div>Clima en <strong>${escapeHtml(loc.name + (loc.country? ', '+loc.country : ''))}</strong><br/>Temperatura: <strong>${cw.temperature}°C</strong><br/>Viento: ${cw.windspeed} km/h<br/>Condición (código): ${cw.weathercode}</div>`,'bot')
-      } else writeLine('No se pudo obtener clima.','bot')
-    }
-
-    else if(cmd === '.tabla'){
-      const n = Number(parts[1])
-      if(!n || isNaN(n)){ writeLine('Usa: .tabla <n> donde n es 1..10 por ejemplo .tabla 7','bot'); return }
-      let html = `<div><strong>Tabla del ${n}</strong><pre>`
-      for(let i=1;i<=10;i++) html += `${n} x ${i} = ${n*i}\n`
-      html += `</pre></div>`
-      writeLine(html,'bot')
-    }
-
-    else if(cmd === '.ia' || cmd === '.ai'){
-      const prompt = parts.slice(1).join(' ')
-      if(!prompt){ writeLine('Usa: .Ia <mensaje>','bot'); return }
-      writeLine('Enviando a la IA...','bot')
-      const key = document.getElementById('openaiKey').value.trim()
-      if(!key){
-        // fallback local simple echo-like bot
-        writeLine(`<div><em>Modo local (sin API key):</em> Lo que veo: "${escapeHtml(prompt)}" — responde: "Hola! ¿Qué más quieres saber?"</div>`,'bot')
-        return
-      }
-      try{
-        const res = await fetch('https://api.openai.com/v1/chat/completions',{
-          method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-          body: JSON.stringify({model:'gpt-4o-mini',messages:[{role:'user',content:prompt}],max_tokens:400})
-        })
-        const j = await res.json()
-        const reply = j?.choices?.[0]?.message?.content || JSON.stringify(j)
-        writeLine(escapeHtml(reply),'bot')
-      }catch(e){ writeLine('Error al llamar a la API de OpenAI: '+e.message,'bot') }
-    }
-
-    else if(cmd === '.resumen'){
-      const text = parts.slice(1).join(' ')
-      if(!text){ writeLine('Usa: .resumen <texto a resumir>','bot'); return }
-      // Haremos un resumen extractivo simple: seleccionar oraciones más largas y primeras
-      const summary = simpleSummarize(text)
-      writeLine(`<div><strong>Resumen:</strong><pre>${escapeHtml(summary)}</pre></div>`,'bot')
-    }
-
-    else {
-      writeLine('Comando no reconocido. Usa <code>.menu</code> para ver los comandos.','bot')
-    }
-  }catch(err){
-    writeLine('Error interno: '+escapeHtml(err.message||String(err)),'bot')
-  }
-}
-
-// Simple summarizer (extractive) — selecciona oraciones más informativas
-function simpleSummarize(text){
-  // split into sentences
-  const sents = text.match(/[^.!?\n]+[.!?]?/g) || [text]
-  if(sents.length<=3) return text
-  // score by length + presence of keywords
-  const keywords = text.toLowerCase().split(/[^a-záéíóúñ]+/).filter(Boolean)
-  const freq = {}
-  keywords.forEach(w=>freq[w]=(freq[w]||0)+1)
-  function score(sent){
-    const words = sent.toLowerCase().split(/[^a-záéíóúñ]+/).filter(Boolean)
-    let sc = words.length
-    for(const w of words) if(freq[w]>1) sc += Math.min(freq[w],3)
-    return sc
-  }
-  const scored = sents.map(s=>({s,sc:score(s)}))
-  scored.sort((a,b)=>b.sc-a.sc)
-  const top = scored.slice(0, Math.min(3, scored.length)).sort((a,b)=>text.indexOf(a.s)-text.indexOf(b.s)).map(x=>x.s.trim())
-  return top.join(' ')
-}
-
-// --- wiring ---
-document.getElementById('sendBtn').addEventListener('click', ()=>{ handle(document.getElementById('cmdInput').value); document.getElementById('cmdInput').value = '' })
-document.getElementById('cmdInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter') { e.preventDefault(); document.getElementById('sendBtn').click() } })
-
-document.getElementById('avatarFile').addEventListener('change', (ev)=>{
-  const f = ev.target.files[0]; if(!f) return
-  const url = URL.createObjectURL(f)
-  document.getElementById('avatarImg').src = url
-})
-document.getElementById('resetAvatar').addEventListener('click', ()=>document.getElementById('avatarImg').src='https://spacny.wuaze.com//uploads/32990458e77494cdaeab1b9685495a77_1.jpg')
-document.getElementById('clearKey').addEventListener('click', ()=>document.getElementById('openaiKey').value='')
-
-// welcome
-writeLine('<strong>Hola — soy Haru-Urara-Bot</strong> ¡prueba <code>.menu</code> para ver comandos!','bot')
-
-  </script>
+    </script>
+    
 </body>
 </html>
