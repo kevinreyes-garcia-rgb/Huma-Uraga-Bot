@@ -20,9 +20,11 @@ A diferencia de otros sistemas, este chatbot se enfoca en la ejecución directa 
 
 ### 🚀 Funciones Principales:
 * **🆘 Asistente de Ayuda:** Comandos optimizados para resolver tus dudas y guiarte en el uso del sistema.
-* **📥 Centro de Descargas:** Capacidad para gestionar y facilitar la bajada de contenido de forma eficiente.
 * **🎨 Generador de Imágenes:** ¡Crea cualquier tipo de imagen que imagines! El bot procesa tus peticiones visuales al instante.
 * **⚙️ Lógica Pura:** Funciona mediante scripts dedicados, garantizando respuestas precisas sin las alucinaciones de una IA.
+* **   Ia:** Ayuda de inteligencia artificial.
+* **   Poemas :** Genera hermosos poemas.
+
 
 ---
 
