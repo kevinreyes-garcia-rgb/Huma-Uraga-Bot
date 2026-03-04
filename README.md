@@ -22,8 +22,13 @@ A diferencia de otros sistemas, este chatbot se enfoca en la ejecución directa 
 * **🆘 Asistente de Ayuda:** Comandos optimizados para resolver tus dudas y guiarte en el uso del sistema.
 * **🎨 Generador de Imágenes:** ¡Crea cualquier tipo de imagen que imagines! El bot procesa tus peticiones visuales al instante.
 * **⚙️ Lógica Pura:** Funciona mediante scripts dedicados, garantizando respuestas precisas sin las alucinaciones de una IA.
-* **   Ia:** Ayuda de inteligencia artificial.
-* **   Poemas :** Genera hermosos poemas.
+* **🤖Ia** Ayuda de inteligencia artificial.
+* **📝Poemas :** Genera hermosos poemas.
+* **🕑Time :** Te da la hora de cual quier pais.
+* **🎇Clima  :** Te dice el clima y viento de cualquier paiz osea pronostico.
+* **📕Resumenes :** Genera Resumenes de textos largos.
+* **🗯Tablas :** tiene acseso a todo tipo de tabla de multiplicar.
+
 
 
 ---
@@ -55,4 +60,4 @@ Si quieres probar el bot localmente, sigue estos pasos:
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone [https://kevinreyes-garcia-rgb.github.io/Huma-Uraga-Bot/)
+   https://kevinreyes-garcia-rgb.github.io/Huma-Uraga-Bot/
