@@ -53,4 +53,4 @@ Si quieres probar el bot localmente, sigue estos pasos:
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone [https://kevinreyes-garcia-rgb.github.io/Aqua-Bot/)
+   git clone [https://kevinreyes-garcia-rgb.github.io/Huma-Uraga-Bot/)
