@@ -39,7 +39,7 @@ Este proyecto es el resultado del trabajo en equipo y la pasión de:
 
 | ✨ Rol | 👤 Desarrollador |
 | :--- | :--- |
-| **Lead Dev** | [Klee](https://github.com/kevinreyes-garcia-rgb/Aqua-Bot.git) |
+| **Lead Dev** | [Klee](https://github.com/kevinreyes-garcia-rgb/) |
 
 
 ---
