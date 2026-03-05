@@ -1,6 +1,6 @@
 # 🌟 ¡Bienvenido a **Huma-Uraga-Chatbot**! 🌟
 
-¡Hola! Estás ante un proyecto único desarrollado con mucha dedicación. Este es un chatbot diseñado para ser tu mano derecha en múltiples tareas, combinando utilidad, descargas y creatividad visual en un solo lugar.
+¡Hola! Estás ante un proyecto único inspirado en las Umas desarrollado con mucha dedicación. Este es un chatbot diseñado para ser tu mano derecha en múltiples tareas, combinando utilidad,creatividad visual en un solo lugar.
 
 ---
 
@@ -47,11 +47,9 @@ Este proyecto es el resultado del trabajo en equipo y la pasión de:
 ## 📈 Hoja de Ruta (Roadmap)
 
 Como estamos en **fase de desarrollo**, esto es lo que viene pronto:
-* [ ] 🛠️ Optimización del motor de generación de imágenes.
-* [ ] 📦 Expansión del catálogo de servidores de descarga.
 * [ ] 🌈 Interfaz de usuario más animada y colorida.
 * [ ] 🐛 Corrección de errores reportados por la comunidad.
-
+* [ ] 🤖 Mejor Api para las opsiones de inteligensia artificial.
 ---
 
 ## 🛠️ Instalación y Uso
