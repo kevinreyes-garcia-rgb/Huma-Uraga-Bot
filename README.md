@@ -2,7 +2,7 @@
 
 ¡Hola! Estás ante un proyecto único inspirado en las Umas desarrollado con mucha dedicación. Este es un chatbot diseñado para ser tu mano derecha en múltiples tareas, combinando utilidad,creatividad visual en un solo lugar.
 
-> **Denle estrellitaq a este proyecto para apoyarme y darme mas inspiracion para mejorarlo o crear mas proyectos.**
+> **Denle estrellitas a este proyecto para apoyarme y darme mas inspiracion para mejorarlo o crear mas proyectos.**
 
 ---
 
