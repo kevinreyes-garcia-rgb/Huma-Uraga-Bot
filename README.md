@@ -54,12 +54,14 @@ Como estamos en **fase de desarrollo**, esto es lo que viene pronto:
 * [ ] 🤖 Mejor Api para las opsiones de inteligensia artificial.
 ---
 
-## 🛠️ Instalación y Uso
+<details>
+   <summary>Instalacion</summary>
 
-Si quieres probar el bot localmente, sigue estos pasos:
+[Link Directo](https://kevinreyes-garcia-rgb.github.io/Huma-Uraga-Bot/)
 
-1. **Clonar el repositorio:**
-   ```bash
-   https://kevinreyes-garcia-rgb.github.io/Huma-Uraga-Bot/
-
-[Link](https://kevinreyes-garcia-rgb.github.io/Huma-Uraga-Bot/)
+Copihable
+```
+https://kevinreyes-garcia-rgb.github.io/Huma-Uraga-Bot/
+```
+   
+</details>
